@@ -1,0 +1,113 @@
+main {
+  display: flex;
+  max-height: 100vh;
+
+  .sidebar {
+    display: flex;
+    flex: 1;
+    height: 99vh;
+    flex-direction: column;
+    // border-right: 0.5px solid lightgray;
+    background-color: white;
+
+    a {
+      text-decoration: none;
+      color: #5f7161;
+    }
+
+    .top {
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(132, 132, 132, 0.47);
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #5f7161;
+
+      .logo {
+        font-size: 20px;
+        font-weight: bold;
+        color: #5f7161;
+      }
+    }
+
+    .center {
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(132, 132, 132, 0.47);
+      padding: 10px;
+      margin: 10px;
+      height: 80vh;
+      border-radius: 10px;
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .title {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-top: 15px;
+        margin-bottom: 5px;
+      }
+
+      li {
+        padding: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #efead8;
+        }
+
+        .icon {
+          font-size: 18px;
+          padding-right: 5px;
+          color: #6d8b74;
+        }
+
+        span {
+          font-size: 13px;
+          font-weight: 600;
+          color: #5f7161;
+        }
+      }
+    }
+
+    .bottom {
+      display: flex;
+      align-items: center;
+      margin: 10px;
+
+      .colorOption {
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        border-radius: 5px;
+        border: 1px solid #5f7161;
+        cursor: pointer;
+
+        &:nth-child(1) {
+          background-color: whitesmoke;
+        }
+        &:nth-child(2) {
+          background-color: black;
+        }
+      }
+    }
+  }
+
+  #details {
+    flex: 5;
+    width: 70%;
+
+    .loading {
+      opacity: 0.25;
+      transition: opacity 200ms;
+      transition-delay: 200ms;
+    }
+  }
+}

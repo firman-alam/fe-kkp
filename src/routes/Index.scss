@@ -1,0 +1,41 @@
+.idx {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .header,
+  .subheader,
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(132, 132, 132, 0.47);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+  }
+
+  .subheader {
+    display: flex;
+    justify-content: center;
+    padding: 35px;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+
+    .body__bottom {
+      width: 100%;
+      display: flex;
+
+      .income,
+      .outcome {
+        width: 100%;
+      }
+    }
+  }
+}

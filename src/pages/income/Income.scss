@@ -1,0 +1,60 @@
+.content__main {
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(132, 132, 132, 0.47);
+  margin: 10px;
+  border-radius: 10px;
+
+  .content__title {
+    font-size: 20px;
+    color: gray;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .link {
+      text-decoration: none;
+      color: green;
+      font-size: 15px;
+      font-weight: 400;
+      border: 1px solid green;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .content__table {
+    height: 80vh;
+    padding: 0 2rem;
+  }
+}
+
+.cellAction {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  .editButton {
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: darkblue;
+    border: 1px solid rgba(0, 0, 139, 0.372);
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(0, 0, 180);
+    }
+  }
+
+  .deleteButton {
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: darkred;
+    border: 1px solid rgba(139, 0, 0, 0.452);
+    cursor: pointer;
+  }
+}
