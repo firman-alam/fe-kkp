@@ -1,28 +1,37 @@
 import React, { useState } from 'react';
-import './Income.scss';
-// react query
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+// rtk query
 import {
-  getIncome,
-  createIncome,
-  updateIncome,
-  deleteIncome,
-} from '../../app/api';
+  useAddNewIncomeMutation,
+  useGetIncomeQuery,
+  useUpdateIncomeMutation,
+} from './incomeApiSlice';
 // MUI Components
 import { Toolbar } from '@mui/material/';
-import { DataGrid } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarExport,
+} from '@mui/x-data-grid';
 // MUI Icons
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
-import PageHeader from '../../components/PageHeader';
 // components
 import { incomeCols } from '../../constants/DatatableSource';
+import PageHeader from '../../components/PageHeader';
 import Popup from '../../components/PopUp';
-import IncomeForm from './IncomeForm';
 import Controls from '../../components/controls/Control';
-import DeleteAlert from '../../components/DeleteAlert';
+import IncomeForm from './IncomeForm';
+import DeleteAlert from './DeleteAlert';
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 const Income = () => {
   // useState
@@ -31,37 +40,21 @@ const Income = () => {
   const [deleteVal, setDeleteVal] = useState();
   const [openDelete, setOpenDelete] = useState(false);
 
-  const queryClient = useQueryClient();
   const {
+    data: income,
     isLoading,
+    isSuccess,
     isError,
     error,
-    data: dataIncome,
-  } = useQuery('income', getIncome);
-
-  console.log(dataIncome);
-  // react query mutation
-  const addIncomeMutation = useMutation(createIncome, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('income');
-    },
-  });
-  const updateIncomeMutation = useMutation(updateIncome, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('income');
-    },
-  });
-  const deleteIncomeMutation = useMutation(deleteIncome, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('income');
-    },
-  });
+  } = useGetIncomeQuery();
+  const [addIncome] = useAddNewIncomeMutation();
+  const [updateIncome] = useUpdateIncomeMutation();
 
   // add or edit
   const addOrEdit = (data) => {
     console.log(data);
-    if (!data.id) addIncomeMutation.mutate(data);
-    if (data.id) updateIncomeMutation.mutate(data);
+    if (!data.id) addIncome(data);
+    if (data.id) updateIncome(data);
     // resetForm
     setRecordForEdit(null);
     setOpenPopup(false);
@@ -83,7 +76,7 @@ const Income = () => {
   const actionColumn = [
     {
       field: 'action',
-      headerName: 'Action',
+      headerName: 'Opsi',
       width: 150,
       renderCell: (params) => {
         return (
@@ -117,13 +110,14 @@ const Income = () => {
   if (isLoading) {
     content = <p>Loading...</p>;
   } else if (isError) {
-    content = <p>{error.message}</p>;
-  } else {
+    content = <p>Oh no, there was an error {error}</p>;
+  } else if (isSuccess) {
     content = (
       <DataGrid
         className='datagrid'
-        rows={dataIncome}
+        rows={income}
         columns={incomeCols.concat(actionColumn)}
+        components={{ Toolbar: CustomToolbar }}
         hideFooterPagination
       />
     );
@@ -140,7 +134,7 @@ const Income = () => {
         />
         <Toolbar>
           <Controls.ButtonX
-            text='Add New'
+            text='Tambah Baru'
             size='large'
             variant='outlined'
             startIcon={<AddIcon />}
@@ -154,7 +148,11 @@ const Income = () => {
       {/* Table */}
       <div className='content__table'>{content}</div>
       {/* Pop up Dialog Form */}
-      <Popup title='Add Form' openPopup={openPopup} setOpenPopup={setOpenPopup}>
+      <Popup
+        title='Tambah Baru'
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      >
         <IncomeForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
       </Popup>
       {/* Pop up delete alert */}

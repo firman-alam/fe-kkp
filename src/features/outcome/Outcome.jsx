@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-// react query
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+// rtk query
 import {
-  getOutcome,
-  createOutcome,
-  updateOutcome,
-  deleteOutcome,
-} from '../../app/api';
+  useAddNewOutcomeMutation,
+  useGetOutcomeQuery,
+  useUpdateOutcomeMutation,
+} from './outcomeApiSlice';
 // MUI Components
 import { Toolbar } from '@mui/material/';
-import { DataGrid } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarExport,
+} from '@mui/x-data-grid';
 // MUI Icons
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
@@ -17,11 +19,19 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 // components
 import PageHeader from '../../components/PageHeader';
-import { outcomeCols } from '../../constants/DatatableSource';
 import Popup from '../../components/PopUp';
 import Controls from '../../components/controls/Control';
+import { outcomeCols } from '../../constants/DatatableSource';
 import OutcomeForm from './OutcomeForm';
-import DeleteAlert from '../../components/DeleteAlert';
+import DeleteAlert from './DeleteAlert';
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 const Outcome = () => {
   // useState
@@ -30,36 +40,27 @@ const Outcome = () => {
   const [deleteVal, setDeleteVal] = useState();
   const [openDelete, setOpenDelete] = useState(false);
 
-  // react query
-  const queryClient = useQueryClient();
+  // rtk query
   const {
+    data: outcome,
     isLoading,
+    isSuccess,
     isError,
     error,
-    data: dataIncome,
-  } = useQuery('outcome', getOutcome);
-
-  // react query mutation
-  const addOutcomeMutation = useMutation(createOutcome, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('outcome');
-    },
-  });
-  const updateOutcomeMutation = useMutation(updateOutcome, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('outcome');
-    },
-  });
+  } = useGetOutcomeQuery();
+  const [addOutcome] = useAddNewOutcomeMutation();
+  const [updateOutcome] = useUpdateOutcomeMutation();
 
   // add or edit
   const addOrEdit = (data) => {
-    if (!data.id) addOutcomeMutation.mutate(data);
-    if (data.id) updateOutcomeMutation.mutate(data);
+    if (!data.id) addOutcome(data);
+    if (data.id) updateOutcome(data);
     // resetForm
     setRecordForEdit(null);
     setOpenPopup(false);
   };
 
+  // Open Pop Up Delete
   const openDeletePopUp = (id) => {
     setDeleteVal(id);
     setOpenDelete(true);
@@ -75,7 +76,7 @@ const Outcome = () => {
   const actionColumn = [
     {
       field: 'action',
-      headerName: 'Action',
+      headerName: 'Opsi',
       width: 150,
       renderCell: (params) => {
         return (
@@ -109,13 +110,15 @@ const Outcome = () => {
   if (isLoading) {
     content = <p>Loading...</p>;
   } else if (isError) {
-    content = <p>{error.message}</p>;
-  } else {
+    content = <p>Oh no, there was an error {error}</p>;
+  } else if (isSuccess) {
     content = (
       <DataGrid
         className='datagrid'
-        rows={dataIncome}
+        rows={outcome}
         columns={outcomeCols.concat(actionColumn)}
+        components={{ Toolbar: CustomToolbar }}
+        hideFooterPagination
       />
     );
   }
@@ -131,7 +134,7 @@ const Outcome = () => {
         />
         <Toolbar>
           <Controls.ButtonX
-            text='Add New'
+            text='Tambah Baru'
             size='large'
             variant='outlined'
             startIcon={<AddIcon />}
@@ -145,7 +148,11 @@ const Outcome = () => {
       {/* Table */}
       <div className='content__table'>{content}</div>
       {/* Pop up Dialog Form */}
-      <Popup title='Add Form' openPopup={openPopup} setOpenPopup={setOpenPopup}>
+      <Popup
+        title='Tambah Baru'
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      >
         <OutcomeForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
       </Popup>
       {/* Pop up delete alert */}

@@ -1,6 +1,7 @@
 .idx {
   height: 100vh;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
 
   .header,
@@ -20,7 +21,7 @@
   .subheader {
     display: flex;
     justify-content: center;
-    padding: 35px;
+    padding: 25px;
   }
 
   .body {

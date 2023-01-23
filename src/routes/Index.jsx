@@ -1,26 +1,29 @@
 import React from 'react';
 import './Index.scss';
-import Clock from '../components/Clock';
 import Total from '../components/Total';
-import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
-import { useQuery } from 'react-query';
-import { getTotalIncome, getTotalOutcome } from '../app/api';
 import attin from '../assets/attiin.png';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import { useGetTotalIncomeQuery } from '../features/income/incomeApiSlice';
+import { useGetTotalOutcomeQuery } from '../features/outcome/outcomeApiSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
-  // react query
+  const navigate = useNavigate();
+  // rtk query
   const {
     data: totalIncome,
     isLoading: isloadIncome,
+    isSuccess: isSuccessIncome,
     isError: iserrorIncome,
     error: errorIncome,
-  } = useQuery('totalincome', getTotalIncome);
+  } = useGetTotalIncomeQuery();
   const {
     data: totalOutcome,
     isLoading: isloadOutcome,
+    isSuccess: isSuccessOutcome,
     isError: iserrorOutcome,
     error: errorOutcome,
-  } = useQuery('totaloutcome', getTotalOutcome);
+  } = useGetTotalOutcomeQuery();
 
   // total
   let totalIn = totalIncome
@@ -29,7 +32,7 @@ const Index = () => {
   let totalOut = totalOutcome
     ? parseInt(totalOutcome[0]?.totaltu) + parseInt(totalOutcome[0]?.totaltr)
     : 0;
-  let total = totalIn + totalOut;
+  let total = totalIn - totalOut;
 
   const date = new Date();
   const today = new Intl.DateTimeFormat('id-ID', {
@@ -38,11 +41,11 @@ const Index = () => {
   }).format(date);
 
   let content;
-  if (isloadIncome) {
+  if (isloadIncome || isloadOutcome) {
     content = <p>Loading...</p>;
-  } else if (iserrorIncome) {
-    content = <p>{errorIncome.message || errorOutcome.message}</p>;
-  } else {
+  } else if (iserrorIncome || iserrorOutcome) {
+    content = <p>{errorIncome || errorOutcome}</p>;
+  } else if (isSuccessIncome || isSuccessOutcome) {
     content = (
       <>
         <div className='body'>
@@ -55,6 +58,7 @@ const Index = () => {
                 title='Pemasukan'
                 footer='Detail Pemasukan'
                 total={totalIn}
+                onClick={() => navigate('/pemasukan')}
                 icon={<ArrowForwardOutlinedIcon fontSize='small' />}
               />
             </div>
@@ -63,6 +67,7 @@ const Index = () => {
                 title='Pengeluaran'
                 footer='Detail Pengeluaran'
                 total={totalOut}
+                onClick={() => navigate('/pengeluaran')}
                 icon={<ArrowForwardOutlinedIcon fontSize='small' />}
               />
             </div>

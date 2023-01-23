@@ -4,21 +4,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { deleteIncome, deleteOutcome } from '../app/api';
-import { useMutation, useQueryClient } from 'react-query';
+import { useDeleteOutcomeMutation } from './outcomeApiSlice';
 
 const DeleteAlert = ({ deleteVal, openDelete, setOpenDelete }) => {
-  const queryClient = useQueryClient();
-  const deleteIncomeMutation = useMutation(deleteIncome, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('income');
-    },
-  });
-  const deleteOutcomeMutation = useMutation(deleteOutcome, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('outcome');
-    },
-  });
+  const [deleteOutcome] = useDeleteOutcomeMutation();
 
   return (
     <Dialog
@@ -42,8 +31,7 @@ const DeleteAlert = ({ deleteVal, openDelete, setOpenDelete }) => {
         <Button
           onClick={() => {
             setOpenDelete(false);
-            deleteIncomeMutation.mutate(deleteVal);
-            deleteOutcomeMutation.mutate(deleteVal);
+            deleteOutcome(deleteVal);
           }}
           autoFocus
         >

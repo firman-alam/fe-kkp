@@ -5,7 +5,7 @@ main {
   .sidebar {
     display: flex;
     flex: 1;
-    height: 99vh;
+    height: 90vh;
     flex-direction: column;
     // border-right: 0.5px solid lightgray;
     background-color: white;
@@ -19,7 +19,7 @@ main {
       -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
       box-shadow: 2px 4px 10px 1px rgba(132, 132, 132, 0.47);
       padding: 10px;
-      margin: 10px;
+      margin: 5px;
       border-radius: 10px;
 
       display: flex;
@@ -28,10 +28,9 @@ main {
       justify-content: center;
       color: #5f7161;
 
-      .logo {
-        font-size: 20px;
-        font-weight: bold;
-        color: #5f7161;
+      img {
+        height: 50px;
+        width: 50px;
       }
     }
 
@@ -49,14 +48,12 @@ main {
       }
 
       .title {
-        font-size: 1rem;
+        font-size: 0.75rem;
         font-weight: bold;
-        margin-top: 15px;
         margin-bottom: 5px;
       }
 
       li {
-        padding: 5px;
         cursor: pointer;
 
         &:hover {

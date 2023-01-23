@@ -6,9 +6,12 @@ import Controls from '../../components/controls/Control';
 const categoryItems = [
   { id: 'kas', title: 'Kas' },
   { id: 'kajian', title: 'Kajian' },
-  { id: 'zakat', title: 'Zakat' },
-  { id: 'qurban', title: 'Qurban' },
+  { id: 'janaiz', title: 'Janaiz' },
+  { id: 'ifthor', title: 'Ifthor' },
   { id: 'dauroh', title: 'Dauroh' },
+  { id: 'rq', title: 'Rumah Quran' },
+  { id: 'jumat_berkah', title: 'Jumat Berkah' },
+  { id: 'baksos', title: 'Bakti Sosial' },
 ];
 
 const initialFormValues = {
@@ -93,7 +96,7 @@ const IncomeForm = ({ addOrEdit, recordForEdit }) => {
           <div>
             <Controls.ButtonX
               type='submit'
-              text='Submit'
+              text='Input'
               variant='outlined'
               color='primary'
             />

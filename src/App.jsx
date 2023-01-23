@@ -3,17 +3,20 @@ import {
   createBrowserRouter,
   Route,
 } from 'react-router-dom';
-import Dauroh from './pages/dauroh/Dauroh';
-import Income from './pages/income/Income';
-import Kajian from './pages/kajian/Kajian';
-import Kas from './pages/kas/Kas';
-import Login from './pages/login/Login';
-import Outcome from './pages/outcome/Outcome';
-import Qurban from './pages/qurban/Qurban';
-import Zakat from './pages/zakat/Zakat';
 import Index from './routes/Index';
-import ProtectedRoute from './routes/protectedRoute';
 import Root from './routes/Root';
+import Login from './features/auth/Login';
+import Income from './features/income/Income';
+import Outcome from './features/outcome/Outcome';
+import BaktiSosial from './pages/BaktiSosial';
+import Dauroh from './pages/Dauroh';
+import Kas from './pages/Kas';
+import Kajian from './pages/Kajian';
+import Ifthor from './pages/Ifthor';
+import Janaiz from './pages/Janaiz';
+import Rq from './pages/Rq';
+import JumatBerkah from './pages/JumatBerkah';
+import ProtectedRoute from './routes/protectedRoute';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,14 +26,18 @@ export const router = createBrowserRouter(
           <Route index element={<Index />} />
           <Route path='pemasukan' element={<Income />} />
           <Route path='pengeluaran' element={<Outcome />} />
-          <Route path='kas' element={<Kas />} />
-          <Route path='qurban' element={<Qurban />} />
-          <Route path='kajian' element={<Kajian />} />
-          <Route path='zakat' element={<Zakat />} />
           <Route path='dauroh' element={<Dauroh />} />
+          <Route path='kas' element={<Kas />} />
+          <Route path='kajian' element={<Kajian />} />
+          <Route path='ifthor' element={<Ifthor />} />
+          <Route path='janaiz' element={<Janaiz />} />
+          <Route path='rumahquran' element={<Rq />} />
+          <Route path='jumatberkah' element={<JumatBerkah />} />
+          <Route path='baktisosial' element={<BaktiSosial />} />
         </Route>
       </Route>
-      <Route path='/auth' element={<Login />} />
+
+      <Route path='/masuk' element={<Login />} />
     </>
   )
 );
